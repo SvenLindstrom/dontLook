@@ -1,0 +1,22 @@
+[MESSAGES CONTROL]
+
+#disable=locally-disabled,locally-enabled
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+#max-line-length=79
+
+
+[REPORTS]
+
+#reports=no
+
+[MASTER]
+#ignore=*_test.py
+#ignore-patterns=*test.py
+#ignore-patterns=*.txt
+
+
+init-hook='import sys; sys.path.append(".")'
