@@ -1,9 +1,17 @@
+PYTHON ?= python
+
+MESSAGE = printf "\033[32;01m---> $(1)\033[0m\n"
+
+
+
 version:
-	@printf "Currently using executable: python\n"
-	python --version
+	@printf "Currently using executable: $(PYTHON)\n"
+	which $(PYTHON)
+	$(PYTHON) --version
+
 
 venv:
-	[ -d .venv ] || python -m venv .venv
+	[ -d .venv ] || $(PYTHON) -m venv .venv
 	@printf "Now activate the Python virtual environment.\n"
 	@printf "On Unix and Mac, do:\n"
 	@printf ". .venv/bin/activate\n"
@@ -12,16 +20,16 @@ venv:
 	@printf "Type 'deactivate' to deactivate.\n
 
 install:
-	python -m pip install -r requirements.txt
+	$(PYTHON) -m pip install -r requirements.txt
 
 installed:
-	python -m pip list
+	$(PYTHON) -m pip list
 
 clean:
 	@$(call MESSAGE,$@)
 	rm -f .coverage *.pyc
 	rm -rf __pycache__
-	rm -rf htmlcov
+
 
 clean-doc: clean
 	@$(call MESSAGE,$@)
@@ -33,7 +41,7 @@ clean-all: clean clean-doc
 
 pylint:
 	@$(call MESSAGE,$@)
-	python -m pylint *.py
+	- cd Pig && $(PYTHON) -m pylint *.py
 
 flake8:
 	@$(call MESSAGE,$@)
@@ -44,13 +52,13 @@ lint: flake8 pylint
 
 black:
 	@$(call MESSAGE,$@)
-	 python -m black Pig/ test/
+	 $(PYTHON) -m black Pig/ test/
 
 codestyle: black
 
 unittest:
 	@$(call MESSAGE,$@)
-	 python -m unittest test/test_*
+	 $(PYTHON) -m unittest test/test_*
 
 coverage:
 	@$(call MESSAGE,$@)

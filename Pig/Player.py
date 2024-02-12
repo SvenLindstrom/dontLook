@@ -11,13 +11,15 @@ class Player:
 
     def getInput(self):
         while True:
-            choice = input('do you want to roll again?[y/n] press k to pause the game: ')
+            choice = input(
+                "do you want to roll again?[y/n] press k to pause the game: "
+            )
             match choice:
-                case 'y':
+                case "y":
                     return True
-                case 'n':
+                case "n":
                     return False
-                case 'k':
+                case "k":
                     self.pause_Game = True
                     return False
                 case _:
