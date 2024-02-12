@@ -29,6 +29,7 @@ clean:
 	@$(call MESSAGE,$@)
 	rm -f .coverage *.pyc
 	rm -rf __pycache__
+	rm -rf htmlcov
 
 
 clean-doc: clean
