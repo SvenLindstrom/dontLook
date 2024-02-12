@@ -69,3 +69,52 @@ coverage:
 
 test: lint coverage
 
+.PHONY: pydoc
+
+pydoc:
+	@$(call MESSAGE,$@)
+	install -d doc/pydoc
+	$(PYTHON) -m pydoc -w Pig/*.py
+	mv *.html doc/pydoc
+
+pdoc:
+	@$(call MESSAGE,$@)
+	pdoc --force --html --output-dir doc/pdoc Pig/*.py
+
+pyreverse:
+	@$(call MESSAGE,$@)
+	install -d doc/pyreverse
+	pyreverse Pig/*.py
+	dot -Tpng classes.dot > doc/pyreverse/classes.png
+	rm -f classes.dot 
+
+doc: pdoc pyreverse #pydoc sphinx
+
+
+
+radon-cc:
+	@$(call MESSAGE,$@)
+	radon cc --show-complexity --average Pig
+
+radon-mi:
+	@$(call MESSAGE,$@)
+	radon mi --show Pig
+
+radon-raw:
+	@$(call MESSAGE,$@)
+	radon raw Pig
+
+radon-hal:
+	@$(call MESSAGE,$@)
+	radon hal Pig
+
+cohesion:
+	@$(call MESSAGE,$@)
+	cohesion --directory Pig
+
+metrics: radon-cc radon-mi radon-raw radon-hal cohesion
+
+bandit:
+	@$(call MESSAGE,$@)
+	bandit --recursive Pig
+
