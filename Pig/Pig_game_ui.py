@@ -6,9 +6,7 @@ import high_score
 
 class Game:
     score_boare = high_score.ScoreBoared()
-    game_running = False
     game = None
-    score_boare = high_score.ScoreBoared()
 
     def ui(self):
         while True:
@@ -25,13 +23,13 @@ class Game:
 
             match choice:
                 case 1:
-                    if self.game_running and self.continue_game():
+                    if self.game is not None and self.continue_game():
                         self.play_game(self.game)
                     else:
                         self.game_set_up()
                         self.play_game(self.game)
                 case 2:
-                    if self.game_running:
+                    if self.game is not None:
                         self.play_game(self.game)
                     else:
                         print("no game currently running")
@@ -59,7 +57,7 @@ class Game:
             case 2:
                 player1 = player.Player(get_player_name(1))
                 player2 = self.select_ai()
-        self.game = pig_game.Pig(player1, player2)
+        self.game = pig_game.Pig(player1, player2, self.score_boare)
 
     def select_ai(self):
         print(
@@ -79,18 +77,14 @@ class Game:
         old_name = get_player_name("old")
         new_name = get_player_name("new")
         self.score_boare.up_date_name(old_name, new_name)
-        if self.game_running:
+        if self.game is not None:
             if self.game.player1.name == old_name:
                 self.game.player1.name = new_name
             elif self.game.player2.name == old_name:
                 self.game.player2.name = new_name
 
     def play_game(self, game):
-        self.game_running, winer = game.test()
-        if winer is not None:
-            self.score_boare.up_date_games_played(self.game.player1.name)
-            self.score_boare.up_date_games_played(self.game.player2.name)
-            self.score_boare.up_date_games_won(winer.name)
+        self.game = game.test()
 
 
 def get_player_name(i):

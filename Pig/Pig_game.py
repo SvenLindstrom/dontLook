@@ -2,11 +2,12 @@ import random
 
 
 class Pig:
-    def __init__(self, player1, player2) -> None:
+    def __init__(self, player1, player2, score_boared) -> None:
         self.player1 = player1
         self.player2 = player2
         self.current_turn = player1
         self.current_score = 0
+        self.score_boared = score_boared
 
     def test(self):
 
@@ -29,18 +30,32 @@ class Pig:
                     continue
 
                 if self.current_turn.pause_game:
-                    return True, None
+                    return self
 
                 self.current_turn.points += self.current_score
                 self.current_score = 0
                 if self.current_turn.points > 100:
                     print(f"{self.current_turn.name} won this round")
-                    return False, self.current_turn
+                    self.update_boared()
+                    return None
                 break
 
             self.current_turn = (
                 self.player2 if self.current_turn == self.player1 else self.player1
             )
+        
+    def update_boared(self):
+        self.score_boared.up_date_games_played(self.player1)
+        self.score_boared.up_date_games_played(self.player1)
+        self.score_boared.up_date_games_won(self.current_turn)
+
+
+
+
+
+
+
+
 
     def check_win(self):
         return self.current_turn.points > 100
@@ -53,14 +68,14 @@ class Pig:
 
             if self.current_turn.pause_game is True:
                 if not self.un_pause_game():
-                    return True, None
+                    return self
 
             if not self.player_turn(self.current_turn):
-                return True, None
+                return self 
 
             if self.check_win():
                 print(f"{self.current_turn.name} won this round")
-                return False, self.current_turn
+                return None
 
             self.current_turn = (
                 self.player2 if self.current_turn == self.player1 else self.player1
