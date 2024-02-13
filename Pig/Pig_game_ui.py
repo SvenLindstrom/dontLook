@@ -1,14 +1,14 @@
-import HighScore
-import Player
-import Pig_game
-import Pig_Ai
-
+import sys
+import player
+import pig_game
+import pig_ai
+import high_score
 
 class Game:
-    scoreBoare = HighScore.ScoreBoared()
+    score_boare = high_score.ScoreBoared()
     game_running = False
     game = None
-    scoreBoare = HighScore.ScoreBoared()
+    score_boare = high_score.ScoreBoared()
 
     def ui(self):
         while True:
@@ -21,88 +21,88 @@ class Game:
                 5. change name
                 6. quit"""
             )
-            choice = getinput(6)
+            choice = get_input(6)
 
             match choice:
                 case 1:
-                    if self.game_running and self.ContinueGame():
-                        self.playGame(self.game)
+                    if self.game_running and self.continue_game():
+                        self.play_game(self.game)
                     else:
-                        self.GameSetUp()
-                        self.playGame(self.game)
+                        self.game_set_up()
+                        self.play_game(self.game)
                 case 2:
                     if self.game_running:
-                        self.playGame(self.game)
+                        self.play_game(self.game)
                     else:
                         print("no game currently running")
                 case 3:
                     pass
                 case 4:
-                    print(self.scoreBoare)
+                    print(self.score_boare)
                 case 5:
-                    self.changeName()
+                    self.change_name()
                 case 6:
-                    self.scoreBoare.saveBoared()
-                    exit()
+                    self.score_boare.save_boared()
+                    sys.exit()
 
-    def GameSetUp(self):
+    def game_set_up(self):
         print(
             """Game setting:
             1. Player VS Player
             2. Player VS Ai"""
         )
-        choice = getinput(2)
+        choice = get_input(2)
         match choice:
             case 1:
-                player1 = Player.Player(getPlayerName(1))
-                player2 = Player.Player(getPlayerName(2))
+                player1 = player.Player(get_player_name(1))
+                player2 = player.Player(get_player_name(2))
             case 2:
-                player1 = Player.Player(getPlayerName(1))
-                player2 = self.selectAi()
-        self.game = Pig_game.Pig(player1, player2)
+                player1 = player.Player(get_player_name(1))
+                player2 = self.select_ai()
+        self.game = pig_game.Pig(player1, player2)
 
-    def selectAi(self):
+    def select_ai(self):
         print(
             """Ai difficulty:
             1. Pig-let
             2. Hog
             3. Boar"""
         )
-        choice = getinput(3)
-        return Pig_Ai.Ai(choice)
+        choice = get_input(3)
+        return pig_ai.Ai(choice)
 
-    def ContinueGame(self):
+    def continue_game(self):
         print("game is currently running, continue old game?")
-        return getChoice()
+        return get_choice()
 
-    def changeName(self):
-        old_name = self.getPlayerName("old")
-        new_name = self.getPlayerName("new")
-        self.scoreBoare.upDateName(old_name, new_name)
+    def change_name(self):
+        old_name = get_player_name("old")
+        new_name = get_player_name("new")
+        self.score_boare.up_date_name(old_name, new_name)
         if self.game_running:
             if self.game.player1.name == old_name:
                 self.game.player1.name = new_name
             elif self.game.player2.name == old_name:
                 self.game.player2.name = new_name
 
-    def playGame(self, game):
+    def play_game(self, game):
         self.game_running, winer = game.test()
         if winer is not None:
-            self.scoreBoare.upDateGamesPlayed(self.game.player1.name)
-            self.scoreBoare.upDateGamesPlayed(self.game.player2.name)
-            self.scoreBoare.upDateGamesWon(winer.name)
+            self.score_boare.up_date_games_played(self.game.player1.name)
+            self.score_boare.up_date_games_played(self.game.player2.name)
+            self.score_boare.up_date_games_won(winer.name)
 
 
-def getPlayerName(i):
+def get_player_name(i):
     name = input(f"player {i} name: ")
     if name in ["pig-let", "hog", "Boar"]:
         print("\033[A                             \033[A")
         print("name unavalable")
-        return getPlayerName(i)
+        return get_player_name(i)
     return name
 
 
-def getChoice():
+def get_choice():
     while True:
         choice = input("[y/n]")
         match choice:
@@ -114,13 +114,12 @@ def getChoice():
                 print("\033[A                             \033[A")
 
 
-def getinput(max):
+def get_input(max_options):
     choice = input("enter your choice: ")
-    if choice.isnumeric() and int(choice) in range(1, max + 1):
+    if choice.isnumeric() and int(choice) in range(1, max_options + 1):
         return int(choice)
-    else:
-        print("\033[A                             \033[A")
-        return getinput(max)
+    print("\033[A                             \033[A")
+    return get_input(max_options)
 
 
 if __name__ == "__main__":

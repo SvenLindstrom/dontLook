@@ -9,30 +9,30 @@ class ScoreBoared:
         try:
             with open("HighScore.bin", "rb") as f:
                 self.players = pickle.load(f)
-        except:
+        except FileNotFoundError:
             for player in self.players:
                 self.players[player] = {"wins": 0, "played": 0}
 
-    def nameExists(self, name):
+    def name_exists(self, name):
         return name in self.players
 
-    def upDateGamesPlayed(self, name):
+    def up_date_games_played(self, name):
         self.players[name] = self.players.get(name, {"wins": 0, "played": 0})
         self.players[name]["played"] += 1
 
-    def upDateGamesWon(self, name):
+    def up_date_games_won(self, name):
         self.players[name]["wins"] += 1
 
-    def upDateName(self, oldName, newName):
-        self.players[newName] = self.players[oldName]
-        del self.players[oldName]
+    def up_date_name(self, old_name, new_name):
+        self.players[new_name] = self.players[old_name]
+        del self.players[old_name]
 
-    def saveBoared(self):
+    def save_boared(self):
         with open("HighScore.bin", "wb") as f:
             pickle.dump(self.players, f)
 
     def __str__(self) -> str:
-        player_percent = list()
+        player_percent = []
         for player in self.players:
             wins = self.players[player]["wins"]
             played = self.players[player]["played"]

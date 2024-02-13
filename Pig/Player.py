@@ -2,14 +2,14 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.points = 0
-        self.rollDice = self.playerBehaviour
-        self.pause_Game = False
+        self.roll_dice = self.player_behaviour
+        self.pause_game = False
 
-    def playerBehaviour(self, player1, round_points):
+    def player_behaviour(self, player1, round_points):
         print(f"the round score is {round_points}")
-        return self.getInput()
+        return self.get_input()
 
-    def getInput(self):
+    def get_input(self):
         while True:
             choice = input(
                 "do you want to roll again?[y/n] press k to pause the game: "
@@ -20,7 +20,7 @@ class Player:
                 case "n":
                     return False
                 case "k":
-                    self.pause_Game = True
+                    self.pause_game = True
                     return False
                 case _:
                     print("\033[A                             \033[A")

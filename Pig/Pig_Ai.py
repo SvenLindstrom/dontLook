@@ -6,13 +6,13 @@ class Ai:
     def __init__(self, level) -> None:
         self.points = 0
         self.name = ""
-        self.Perfect_play = None
-        self.pause_Game = False
-        self.rollDice = self.behaviour_select(level)
+        self.perfect_play = None
+        self.pause_game = False
+        self.roll_dice = self.behaviour_select(level)
 
-    def load_Perfection(self):
+    def load_perfection(self):
         with open("pig_Perfect_play.bin", "rb") as f:
-            self.Perfect_play = pickle.load(f)
+            self.perfect_play = pickle.load(f)
 
     def behaviour_select(self, difficulty):
         def simple(player1, round_points):
@@ -22,7 +22,7 @@ class Ai:
             return round_points < 20
 
         def hard(player1, round_points):
-            return self.Perfect_play[self.points][player1.points] > round_points
+            return self.perfect_play[self.points][player1.points] > round_points
 
         match difficulty:
             case 1:
@@ -32,6 +32,6 @@ class Ai:
                 self.name = "hog"
                 return normal
             case 3:
-                self.load_Perfection()
+                self.load_perfection()
                 self.name = "Boar"
                 return hard
