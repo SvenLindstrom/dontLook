@@ -1,7 +1,8 @@
 import random
 
 
-class Pig:
+class Pig :
+
     def __init__(self, player1, player2, score_boared) -> None:
         self.player1 = player1
         self.player2 = player2

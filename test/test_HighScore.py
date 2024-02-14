@@ -25,7 +25,7 @@ class TestGameClass(unittest.TestCase):
         boared.up_date_games_won("test_name")
         self.assertTrue(1 == boared.players["test_name"]["wins"])
 
-    def test_not__nameExists(self):
+    def test_not_nameExists(self):
         boared = high_score.ScoreBoared()
         self.assertFalse(boared.name_exists("test_name"))
 
