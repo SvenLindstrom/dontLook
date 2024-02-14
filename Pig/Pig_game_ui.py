@@ -8,7 +8,7 @@ class Game:
     score_boare = high_score.ScoreBoared()
     game = None
 
-    def ui(self):
+    def ui(self) -> None:
         while True:
             print(
                 """Hello to Pig:
@@ -43,7 +43,7 @@ class Game:
                     self.score_boare.save_boared()
                     sys.exit()
 
-    def game_set_up(self):
+    def game_set_up(self) -> None:
         print(
             """Game setting:
             1. Player VS Player
@@ -59,7 +59,7 @@ class Game:
                 player2 = self.select_ai()
         self.game = pig_game.Pig(player1, player2, self.score_boare)
 
-    def select_ai(self):
+    def select_ai(self) -> pig_ai.Ai:
         print(
             """Ai difficulty:
             1. Pig-let
@@ -69,11 +69,11 @@ class Game:
         choice = get_input(3)
         return pig_ai.Ai(choice)
 
-    def continue_game(self):
+    def continue_game(self) -> bool:
         print("game is currently running, continue old game?")
         return get_choice()
 
-    def change_name(self):
+    def change_name(self) -> None:
         old_name = get_player_name("old")
         new_name = get_player_name("new")
         self.score_boare.up_date_name(old_name, new_name)
@@ -83,11 +83,11 @@ class Game:
             elif self.game.player2.name == old_name:
                 self.game.player2.name = new_name
 
-    def play_game(self, game):
+    def play_game(self, game) -> None:
         self.game = game.test()
 
 
-def get_player_name(i):
+def get_player_name(i) -> str:
     name = input(f"player {i} name: ")
     if name in ["pig-let", "hog", "Boar"]:
         print("\033[A                             \033[A")
@@ -96,7 +96,7 @@ def get_player_name(i):
     return name
 
 
-def get_choice():
+def get_choice() -> bool:
     while True:
         choice = input("[y/n]")
         match choice:
@@ -108,7 +108,7 @@ def get_choice():
                 print("\033[A                             \033[A")
 
 
-def get_input(max_options):
+def get_input(max_options) -> int:
     choice = input("enter your choice: ")
     if choice.isnumeric() and int(choice) in range(1, max_options + 1):
         return int(choice)
@@ -119,3 +119,5 @@ def get_input(max_options):
 if __name__ == "__main__":
     pg = Game()
     pg.ui()
+
+

@@ -1,15 +1,15 @@
 class Player  :
-    def __init__(self, name):
+    def __init__(self, name) -> None:
         self.name = name
         self.points = 0
         self.roll_dice = self.player_behaviour
         self.pause_game = False
 
-    def player_behaviour(self, player1, round_points):
-        print(f"the round score is {round_points}")
+    def player_behaviour(self, game) -> bool:
+        print(f"the round score is {game.round_points}")
         return self.get_input()
 
-    def get_input(self):
+    def get_input(self) -> bool:
         while True:
             choice = input(
                 "roll again?[y/n] press p to pause the game: "
