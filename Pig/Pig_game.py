@@ -10,48 +10,66 @@ class Pig:
         self.score_boared = score_boared
 
     def test(self):
+        self.print_game_state()
 
         while True:
-            print(f"\n{self.player1.name} has {self.player1.points} points")
-            print(f"{self.player2.name} has {self.player2.points} points\n")
-            print(f"{self.current_turn.name}s turn\n")
-            while True:
-                if not self.current_turn.pause_game:
-                    dice_roll = random.randint(1, 6)
-                    print(f"the dice rolle is {dice_roll}")
-                    if dice_roll == 1:
-                        self.current_score = 0
-                        break
-                    self.current_score += dice_roll
-                else:
-                    self.current_turn.pause_game = False
+            if self.rolled_one():
+                continue
 
-                if self.current_turn.roll_dice(self.player1, self.current_score):
-                    continue
+            if self.current_turn.roll_dice(self.player1, self.current_score):
+                continue
 
-                if self.current_turn.pause_game:
-                    return self
-
-                self.current_turn.points += self.current_score
-                self.current_score = 0
-                if self.current_turn.points > 100:
-                    print(f"{self.current_turn.name} won this round")
-                    self.update_boared()
-                    return None
-                break
-
-            self.current_turn = (
-                self.player2 if self.current_turn == self.player1 else self.player1
-            )
+            if self.current_turn.pause_game:
+                return self
+            
+            if self.is_game_over():
+                return None
+            
+            self.change_player()
+    
+    def print_game_state(self):
+        print(f"\n{self.player1.name} has {self.player1.points} points")
+        print(f"{self.player2.name} has {self.player2.points} points\n")
+        print(f"{self.current_turn.name}s turn\n")
         
+
+    def is_game_over(self):
+        self.end_turn()
+        if self.current_turn.points > 100:
+            print(f"{self.current_turn.name} won this round")
+            self.update_boared()
+            return True
+        return False 
+    
+
+    def end_turn(self):
+        self.current_turn.points += self.current_score
+        self.current_score = 0
+
+
     def update_boared(self):
         self.score_boared.up_date_games_played(self.player1)
         self.score_boared.up_date_games_played(self.player1)
         self.score_boared.up_date_games_won(self.current_turn)
 
-
-
-
+    def change_player(self):
+        self.current_turn = (
+                self.player2 if self.current_turn == self.player1 else self.player1
+            )
+        self.print_game_state() 
+   
+    def rolled_one(self):
+        if not self.current_turn.pause_game:
+            dice_roll = random.randint(1, 6)
+            print(f"the dice rolle is {dice_roll}")
+            if dice_roll == 1:
+                self.current_score = 0
+                self.change_player()
+                return True
+            self.current_score += dice_roll
+        else:
+            self.current_turn.pause_game = False
+        return False
 
 
 
